@@ -1,5 +1,5 @@
 diff --git a/Telegram/SourceFiles/platform/linux/linux_libs.cpp b/Telegram/SourceFiles/platform/linux/linux_libs.cpp
-index 5b502039..45ad10cf 100644
+index 372a012f..a356ad4a 100644
 --- a/Telegram/SourceFiles/platform/linux/linux_libs.cpp
 +++ b/Telegram/SourceFiles/platform/linux/linux_libs.cpp
 @@ -45,6 +45,7 @@ bool loadLibrary(QLibrary &lib, const char *name, int version) {
@@ -44,7 +44,7 @@ index 1ecae702..80b7e4f4 100644
  extern f_gtk_init_check gtk_init_check;
  
 diff --git a/Telegram/gyp/Telegram.gyp b/Telegram/gyp/Telegram.gyp
-index a1e632ae..65d2e415 100644
+index 76a6f3e6..101c98bc 100644
 --- a/Telegram/gyp/Telegram.gyp
 +++ b/Telegram/gyp/Telegram.gyp
 @@ -79,21 +79,19 @@
@@ -52,7 +52,7 @@ index a1e632ae..65d2e415 100644
  
      'defines': [
 -      'AL_LIBTYPE_STATIC',
-       '<!@(python -c "for s in \'<(travis_defines)\'.split(\',\'): print(s)")',
+       '<!@(python -c "for s in \'<(build_defines)\'.split(\',\'): print(s)")',
 +      '__STDC_FORMAT_MACROS',
 +      'TDESKTOP_DISABLE_AUTOUPDATE',
 +      'TDESKTOP_DISABLE_REGISTER_CUSTOM_SCHEME',
@@ -75,7 +75,7 @@ index a1e632ae..65d2e415 100644
      'sources': [
        '<@(qrc_files)',
 diff --git a/Telegram/gyp/qt.gypi b/Telegram/gyp/qt.gypi
-index 24ededbf..5efa8cc8 100644
+index a8adbaa2..dbcc2b26 100644
 --- a/Telegram/gyp/qt.gypi
 +++ b/Telegram/gyp/qt.gypi
 @@ -38,7 +38,6 @@

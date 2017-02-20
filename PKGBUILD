@@ -1,7 +1,7 @@
 # Based on https://aur.archlinux.org/packages/telegram-desktop
 
 pkgname=telegram-desktop-hunspell
-pkgver=1.0.6
+pkgver=1.0.13
 pkgrel=1
 pkgdesc='Official desktop version of Telegram messaging app.'
 arch=('i686' 'x86_64')
@@ -67,7 +67,6 @@ source=(
     "tg.protocol"
     "Build.diff"
     "Hunspell.diff"
-    "FixCompilation.diff"
 )
 sha256sums=(
     'SKIP'
@@ -76,7 +75,6 @@ sha256sums=(
     'SKIP'
     'SKIP'
     'd4cdad0d091c7e47811d8a26d55bbee492e7845e968c522e86f120815477e9eb'
-    'SKIP'
     'SKIP'
     'SKIP'
 )
@@ -110,7 +108,6 @@ prepare() {
     cd "$srcdir/tdesktop"
     git apply "$srcdir/Build.diff"
     git apply "$srcdir/Hunspell.diff"
-    git apply "$srcdir/FixCompilation.diff"
 }
 
 build() {

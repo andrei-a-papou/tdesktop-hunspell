@@ -1,5 +1,5 @@
 diff --git a/Telegram/SourceFiles/historywidget.cpp b/Telegram/SourceFiles/historywidget.cpp
-index c28d64b7..316fc09e 100644
+index e09d657c..4057eb81 100644
 --- a/Telegram/SourceFiles/historywidget.cpp
 +++ b/Telegram/SourceFiles/historywidget.cpp
 @@ -61,6 +61,9 @@ Copyright (c) 2014-2017 John Preston, https://desktop.telegram.org
@@ -105,7 +105,7 @@ index c28d64b7..316fc09e 100644
  } // namespace
  
  // flick scroll taken from http://qt-project.org/doc/qt-4.8/demos-embedded-anomaly-src-flickcharm-cpp.html
-@@ -2392,6 +2481,10 @@ void HistoryInner::onParentGeometryChanged() {
+@@ -2437,6 +2526,10 @@ void HistoryInner::onParentGeometryChanged() {
  MessageField::MessageField(HistoryWidget *history, const style::FlatTextarea &st, const QString &ph, const QString &val) : Ui::FlatTextarea(history, st, ph, val), history(history) {
  	setMinHeight(st::historySendSize.height() - 2 * st::historySendPadding);
  	setMaxHeight(st::historyComposeFieldMaxHeight);
@@ -117,7 +117,7 @@ index c28d64b7..316fc09e 100644
  
  bool MessageField::hasSendText() const {
 diff --git a/Telegram/gyp/Telegram.gyp b/Telegram/gyp/Telegram.gyp
-index 65d2e415..c2127428 100644
+index 101c98bc..07a0edbb 100644
 --- a/Telegram/gyp/Telegram.gyp
 +++ b/Telegram/gyp/Telegram.gyp
 @@ -84,6 +84,7 @@
