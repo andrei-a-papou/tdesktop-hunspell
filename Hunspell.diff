@@ -1,20 +1,20 @@
 diff --git a/Telegram/SourceFiles/historywidget.cpp b/Telegram/SourceFiles/historywidget.cpp
-index e09d657c..4057eb81 100644
+index 8cb33643..e181cb4a 100644
 --- a/Telegram/SourceFiles/historywidget.cpp
 +++ b/Telegram/SourceFiles/historywidget.cpp
-@@ -61,6 +61,9 @@ Copyright (c) 2014-2017 John Preston, https://desktop.telegram.org
- #include "core/qthelp_regex.h"
- #include "ui/widgets/popup_menu.h"
- #include "platform/platform_file_dialog.h"
+@@ -62,6 +62,9 @@ Copyright (c) 2014-2017 John Preston, https://desktop.telegram.org
+ #include "platform/platform_file_utilities.h"
+ #include "auth_session.h"
+ #include "window/notifications_manager.h"
 +#ifdef USE_HUNSPELL
 +	#include <hunspell.hxx>
 +#endif
  
  namespace {
  
-@@ -118,6 +121,92 @@ ApiWrap::RequestMessageDataCallback replyEditMessageDataCallback() {
- 	};
- }
+@@ -138,6 +141,91 @@ private:
+ 
+ };
  
 +#ifdef USE_HUNSPELL
 +// Helper for Hunspell (spell checking)
@@ -41,7 +41,7 @@ index e09d657c..4057eb81 100644
 +	}
 +
 +private:
-+	std_::unique_ptr<Hunspell> _hunspell;
++	std::unique_ptr<Hunspell> _hunspell;
 +	QTextCodec *_codec;
 +
 +	const QByteArray _hunspellPath;
@@ -56,9 +56,9 @@ index e09d657c..4057eb81 100644
 +		_hunspells.clear();
 +		languages.removeDuplicates();
 +		for (const QString &lang : languages) {
-+			auto hunspell = std_::unique_ptr<HunspellHelper>(new HunspellHelper(lang.toLatin1()));
++			auto hunspell = std::unique_ptr<HunspellHelper>(new HunspellHelper(lang.toLatin1()));
 +			if (hunspell->isOpen()) {
-+				_hunspells.push_back(std_::move(hunspell));
++				_hunspells.push_back(std::move(hunspell));
 +			}
 +		}
 +	}
@@ -98,14 +98,13 @@ index e09d657c..4057eb81 100644
 +		}
 +	}
 +
-+	std::vector<std_::unique_ptr<HunspellHelper>> _hunspells;
++	std::vector<std::unique_ptr<HunspellHelper>> _hunspells;
 +};
 +#endif
-+
+ 
  } // namespace
  
- // flick scroll taken from http://qt-project.org/doc/qt-4.8/demos-embedded-anomaly-src-flickcharm-cpp.html
-@@ -2437,6 +2526,10 @@ void HistoryInner::onParentGeometryChanged() {
+@@ -2525,6 +2613,10 @@ void HistoryInner::onParentGeometryChanged() {
  MessageField::MessageField(HistoryWidget *history, const style::FlatTextarea &st, const QString &ph, const QString &val) : Ui::FlatTextarea(history, st, ph, val), history(history) {
  	setMinHeight(st::historySendSize.height() - 2 * st::historySendPadding);
  	setMaxHeight(st::historyComposeFieldMaxHeight);
@@ -117,10 +116,10 @@ index e09d657c..4057eb81 100644
  
  bool MessageField::hasSendText() const {
 diff --git a/Telegram/gyp/Telegram.gyp b/Telegram/gyp/Telegram.gyp
-index 101c98bc..07a0edbb 100644
+index 61303399..0a468787 100644
 --- a/Telegram/gyp/Telegram.gyp
 +++ b/Telegram/gyp/Telegram.gyp
-@@ -84,6 +84,7 @@
+@@ -86,6 +86,7 @@
        'TDESKTOP_DISABLE_AUTOUPDATE',
        'TDESKTOP_DISABLE_REGISTER_CUSTOM_SCHEME',
        'TDESKTOP_DISABLE_UNITY_INTEGRATION',
@@ -129,10 +128,10 @@ index 101c98bc..07a0edbb 100644
  
      'include_dirs': [
 diff --git a/Telegram/gyp/telegram_linux.gypi b/Telegram/gyp/telegram_linux.gypi
-index 9e2d3b76..da8ac718 100644
+index 8cb43a04..a27e2b76 100644
 --- a/Telegram/gyp/telegram_linux.gypi
 +++ b/Telegram/gyp/telegram_linux.gypi
-@@ -53,6 +53,7 @@
+@@ -54,6 +54,7 @@
        'composeplatforminputcontextplugin',
        'ibusplatforminputcontextplugin',
        'fcitxplatforminputcontextplugin',
@@ -140,7 +139,7 @@ index 9e2d3b76..da8ac718 100644
        '<!(pkg-config 2> /dev/null --libs <@(pkgconfig_libs))',
      ],
      'cflags_cc': [
-@@ -60,6 +61,7 @@
+@@ -61,6 +62,7 @@
        '<!(pkg-config 2> /dev/null --cflags gtk+-2.0)',
        '<!(pkg-config 2> /dev/null --cflags glib-2.0)',
        '<!(pkg-config 2> /dev/null --cflags <@(pkgconfig_libs))',

@@ -1,7 +1,7 @@
 # Based on https://aur.archlinux.org/packages/telegram-desktop
 
 pkgname=telegram-desktop-hunspell
-pkgver=1.0.14
+pkgver=1.0.27
 pkgrel=1
 pkgdesc='Official desktop version of Telegram messaging app.'
 arch=('i686' 'x86_64')
@@ -35,7 +35,7 @@ makedepends=(
     'cmake'
     'python'
     'python2'
-    
+
     # QT5 build dependencies
     'xcb-util-keysyms'
     'libgl'
@@ -62,7 +62,7 @@ source=(
     "tdesktop::git+https://github.com/telegramdesktop/tdesktop.git#tag=v$pkgver"
     "https://download.qt.io/official_releases/qt/${qt_version%.*}/$qt_version/submodules/qtbase-opensource-src-$qt_version.tar.xz"
     "https://download.qt.io/official_releases/qt/${qt_version%.*}/$qt_version/submodules/qtimageformats-opensource-src-$qt_version.tar.xz"
-    "git+https://chromium.googlesource.com/external/gyp"
+    "git+https://chromium.googlesource.com/external/gyp#commit=702ac58e4772"
     "telegramdesktop.desktop"
     "tg.protocol"
     "Build.diff"
@@ -81,31 +81,33 @@ sha256sums=(
 
 prepare() {
     cd "$srcdir/tdesktop"
-    
+
     mkdir -p "$srcdir/Libraries"
-    
+
     local qt_patch_file="$srcdir/tdesktop/Telegram/Patches/qtbase_${qt_version//./_}.diff"
     local qt_src_dir="$srcdir/Libraries/qt${qt_version//./_}"
     if [ "$qt_patch_file" -nt "$qt_src_dir" ]; then
         rm -rf "$qt_src_dir"
         mkdir "$qt_src_dir"
-        
+
         mv "$srcdir/qtbase-opensource-src-$qt_version" "$qt_src_dir/qtbase"
         mv "$srcdir/qtimageformats-opensource-src-$qt_version" "$qt_src_dir/qtimageformats"
-        
+
         cd "$qt_src_dir/qtbase"
         patch -p1 -i "$qt_patch_file"
     fi
-    
+
     cd "$srcdir/gyp"
     git apply "$srcdir/tdesktop/Telegram/Patches/gyp.diff"
     sed -i 's/exec python /exec python2 /g' "$srcdir/gyp/gyp"
-    
+
     if [ ! -h "$srcdir/Libraries/gyp" ]; then
         ln -s "$srcdir/gyp" "$srcdir/Libraries/gyp"
     fi
-    
+
     cd "$srcdir/tdesktop"
+    git submodule init
+    git submodule update
     git apply "$srcdir/Build.diff"
     git apply "$srcdir/Hunspell.diff"
 }
@@ -113,7 +115,7 @@ prepare() {
 build() {
     # Build patched Qt
     local qt_src_dir="$srcdir/Libraries/qt${qt_version//./_}"
-    
+
     cd "$qt_src_dir/qtbase"
     ./configure \
         -prefix "$srcdir/qt" \
@@ -137,7 +139,7 @@ build() {
     make
     make install
     export PATH="$srcdir/qt/bin:$PATH"
-    
+
     cd "$qt_src_dir/qtimageformats"
     qmake .
     make
@@ -146,7 +148,7 @@ build() {
     # Build Telegram Desktop
     rm -rf "$srcdir/tdesktop/out"
     cd "$srcdir/tdesktop/Telegram/gyp"
-    
+
     "$srcdir/Libraries/gyp/gyp" \
         -Dlinux_path_qt="$srcdir/qt" \
         -Dlinux_lib_ssl=-lssl \
