@@ -1,7 +1,7 @@
 # Based on https://aur.archlinux.org/packages/telegram-desktop
 
 pkgname=telegram-desktop-hunspell
-pkgver=1.0.27
+pkgver=1.0.29
 pkgrel=1
 pkgdesc='Official desktop version of Telegram messaging app.'
 arch=('i686' 'x86_64')

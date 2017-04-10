@@ -1,8 +1,8 @@
 diff --git a/Telegram/gyp/Telegram.gyp b/Telegram/gyp/Telegram.gyp
-index fb22932c..61303399 100644
+index a1805ebd..19f682cf 100644
 --- a/Telegram/gyp/Telegram.gyp
 +++ b/Telegram/gyp/Telegram.gyp
-@@ -81,21 +81,19 @@
+@@ -82,21 +82,19 @@
      ],
  
      'defines': [
@@ -30,7 +30,7 @@ index fb22932c..61303399 100644
        '<(submodules_loc)/variant/include',
      ],
 diff --git a/Telegram/gyp/qt.gypi b/Telegram/gyp/qt.gypi
-index a3212210..c48f1fa8 100644
+index c12e450b..c48f1fa8 100644
 --- a/Telegram/gyp/qt.gypi
 +++ b/Telegram/gyp/qt.gypi
 @@ -38,7 +38,6 @@
@@ -41,7 +41,7 @@ index a3212210..c48f1fa8 100644
            ],
            'qt_version%': '<(qt_version)',
            'conditions': [
-@@ -97,19 +96,6 @@
+@@ -97,20 +96,6 @@
                '<@(qt_libs)',
                'Qt5DBus',
                'Qt5Core',
@@ -54,6 +54,7 @@ index a3212210..c48f1fa8 100644
 -              'fontconfig',
 -              'expat',
 -              'freetype',
+-              'z',
 -              'xcb-shm',
 -              'xcb-xfixes',
 -              'xcb-render',
@@ -61,7 +62,7 @@ index a3212210..c48f1fa8 100644
              ],
            }],
          ],
-@@ -219,7 +205,6 @@
+@@ -220,7 +205,6 @@
          '<(qt_loc)/plugins/platforminputcontexts',
        ],
        'libraries': [
@@ -69,7 +70,7 @@ index a3212210..c48f1fa8 100644
          '<@(qt_libs_release)',
          '<(linux_lib_ssl)',
          '<(linux_lib_crypto)',
-@@ -232,12 +217,30 @@
+@@ -233,12 +217,30 @@
          'gthread-2.0',
          'glib-2.0',
          'pthread',

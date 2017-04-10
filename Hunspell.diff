@@ -1,18 +1,18 @@
 diff --git a/Telegram/SourceFiles/historywidget.cpp b/Telegram/SourceFiles/historywidget.cpp
-index 8cb33643..e181cb4a 100644
+index f8bfe468..1d0c90a2 100644
 --- a/Telegram/SourceFiles/historywidget.cpp
 +++ b/Telegram/SourceFiles/historywidget.cpp
-@@ -62,6 +62,9 @@ Copyright (c) 2014-2017 John Preston, https://desktop.telegram.org
- #include "platform/platform_file_utilities.h"
- #include "auth_session.h"
+@@ -64,6 +64,9 @@ Copyright (c) 2014-2017 John Preston, https://desktop.telegram.org
  #include "window/notifications_manager.h"
+ #include "window/window_controller.h"
+ #include "inline_bots/inline_results_widget.h"
 +#ifdef USE_HUNSPELL
 +	#include <hunspell.hxx>
 +#endif
  
  namespace {
  
-@@ -138,6 +141,91 @@ private:
+@@ -142,6 +145,91 @@ private:
  
  };
  
@@ -104,7 +104,7 @@ index 8cb33643..e181cb4a 100644
  
  } // namespace
  
-@@ -2525,6 +2613,10 @@ void HistoryInner::onParentGeometryChanged() {
+@@ -2534,6 +2622,10 @@ void HistoryInner::onParentGeometryChanged() {
  MessageField::MessageField(HistoryWidget *history, const style::FlatTextarea &st, const QString &ph, const QString &val) : Ui::FlatTextarea(history, st, ph, val), history(history) {
  	setMinHeight(st::historySendSize.height() - 2 * st::historySendPadding);
  	setMaxHeight(st::historyComposeFieldMaxHeight);
@@ -116,10 +116,10 @@ index 8cb33643..e181cb4a 100644
  
  bool MessageField::hasSendText() const {
 diff --git a/Telegram/gyp/Telegram.gyp b/Telegram/gyp/Telegram.gyp
-index 61303399..0a468787 100644
+index 19f682cf..a9f83755 100644
 --- a/Telegram/gyp/Telegram.gyp
 +++ b/Telegram/gyp/Telegram.gyp
-@@ -86,6 +86,7 @@
+@@ -87,6 +87,7 @@
        'TDESKTOP_DISABLE_AUTOUPDATE',
        'TDESKTOP_DISABLE_REGISTER_CUSTOM_SCHEME',
        'TDESKTOP_DISABLE_UNITY_INTEGRATION',
