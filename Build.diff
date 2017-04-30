@@ -30,7 +30,7 @@ index a1805ebd..19f682cf 100644
        '<(submodules_loc)/variant/include',
      ],
 diff --git a/Telegram/gyp/qt.gypi b/Telegram/gyp/qt.gypi
-index c12e450b..c48f1fa8 100644
+index c12e450b..92ab8738 100644
 --- a/Telegram/gyp/qt.gypi
 +++ b/Telegram/gyp/qt.gypi
 @@ -38,7 +38,6 @@
@@ -62,7 +62,15 @@ index c12e450b..c48f1fa8 100644
              ],
            }],
          ],
-@@ -220,7 +205,6 @@
+@@ -200,6 +185,7 @@
+     '<(qt_loc)/include/QtGui/<(qt_version)',
+     '<(qt_loc)/include/QtCore/<(qt_version)/QtCore',
+     '<(qt_loc)/include/QtGui/<(qt_version)/QtGui',
++    '/usr/include/openssl-1.0',
+   ],
+   'library_dirs': [
+     '<(qt_loc)/lib',
+@@ -220,7 +206,6 @@
          '<(qt_loc)/plugins/platforminputcontexts',
        ],
        'libraries': [
@@ -70,7 +78,7 @@ index c12e450b..c48f1fa8 100644
          '<@(qt_libs_release)',
          '<(linux_lib_ssl)',
          '<(linux_lib_crypto)',
-@@ -233,12 +217,30 @@
+@@ -233,12 +218,30 @@
          'gthread-2.0',
          'glib-2.0',
          'pthread',
