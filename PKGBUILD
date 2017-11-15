@@ -1,8 +1,8 @@
 # Based on https://aur.archlinux.org/packages/telegram-desktop
 
-pkgname=telegram-desktop-hunspell
-pkgver=1.0.29
-pkgrel=2
+pkgname=telegram-desktop
+pkgver=1.1.23
+pkgrel=1
 pkgdesc='Official desktop version of Telegram messaging app.'
 arch=('i686' 'x86_64')
 url="https://desktop.telegram.org/"
@@ -61,21 +61,31 @@ makedepends=(
 qt_version=5.6.2
 source=(
     "tdesktop::git+https://github.com/telegramdesktop/tdesktop.git#tag=v$pkgver"
+    "GSL::git+https://github.com/Microsoft/GSL.git"
+    "variant::git+https://github.com/mapbox/variant.git"
+    "libtgvoip::git+https://github.com/telegramdesktop/libtgvoip.git"
     "https://download.qt.io/official_releases/qt/${qt_version%.*}/$qt_version/submodules/qtbase-opensource-src-$qt_version.tar.xz"
     "https://download.qt.io/official_releases/qt/${qt_version%.*}/$qt_version/submodules/qtimageformats-opensource-src-$qt_version.tar.xz"
     "git+https://chromium.googlesource.com/external/gyp#commit=702ac58e4772"
-    "telegramdesktop.desktop"
+    "telegram-desktop.desktop"
     "tg.protocol"
-    "Build.diff"
-    "Hunspell.diff"
+    "aur-fixes.diff"
+    "libtgvoip-fixes.diff"
+    "hunspell-telegram.diff"
+    "Hunspell.cpp"
 )
 sha256sums=(
     'SKIP'
-    '2f6eae93c5d982fe0a387a01aeb3435571433e23e9d9d9246741faf51f1ee787'
-    '4fb153be62dac393cbcebab65040b3b9d6edecd1ebbe5e543401b0e45bd147e4'
     'SKIP'
     'SKIP'
-    'd4cdad0d091c7e47811d8a26d55bbee492e7845e968c522e86f120815477e9eb'
+    'SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP'
     'SKIP'
     'SKIP'
 )
@@ -109,10 +119,21 @@ prepare() {
     fi
 
     cd "$srcdir/tdesktop"
+
     git submodule init
+    git config submodule.Telegram/ThirdParty/GSL.url "$srcdir/GSL"
+    git config submodule.Telegram/ThirdParty/variant.url "$srcdir/variant"
+    git config submodule.Telegram/ThirdParty/libtgvoip.url "$srcdir/libtgvoip"
     git submodule update
-    git apply "$srcdir/Build.diff"
-    git apply "$srcdir/Hunspell.diff"
+
+    git apply "$srcdir/aur-fixes.diff"
+    git apply "$srcdir/hunspell-telegram.diff"
+
+    cd Telegram/ThirdParty/libtgvoip
+    git checkout .
+    git apply "$srcdir/libtgvoip-fixes.diff"
+
+    sed '/#include <QTextEdit>/d' "$srcdir/Hunspell.cpp" > "$srcdir/tdesktop/Telegram/SourceFiles/chat_helpers/Hunspell.cpp"
 }
 
 build() {
@@ -158,6 +179,7 @@ build() {
         -Dlinux_lib_ssl='-L/usr/lib/openssl-1.0 -lssl' \
         -Dlinux_lib_crypto='-L/usr/lib/openssl-1.0 -lcrypto' \
         -Dlinux_lib_icu="-licuuc -licutu -licui18n" \
+        -Dlinux_path_opus_include="/usr/include/opus" \
         --depth=. --generator-output=../.. -Goutput_dir=out Telegram.gyp --format=cmake
     cd "$srcdir/tdesktop/out/Release"
     cmake .
@@ -170,7 +192,7 @@ package() {
     install -m755 "$srcdir/tdesktop/out/Release/Telegram" "$pkgdir/usr/bin/telegram-desktop"
 
     install -d "$pkgdir/usr/share/applications"
-    install -m644 "$srcdir/telegramdesktop.desktop" "$pkgdir/usr/share/applications/telegramdesktop.desktop"
+    install -m644 "$srcdir/telegram-desktop.desktop" "$pkgdir/usr/share/applications/telegram-desktop.desktop"
 
     install -d "$pkgdir/usr/share/kde4/services"
     install -m644 "$srcdir/tg.protocol" "$pkgdir/usr/share/kde4/services/tg.protocol"
