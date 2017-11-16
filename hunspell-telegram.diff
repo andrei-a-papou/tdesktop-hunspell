@@ -1,0 +1,22 @@
+diff --git a/Telegram/SourceFiles/chat_helpers/message_field.cpp b/Telegram/SourceFiles/chat_helpers/message_field.cpp
+index 5a03876d..97c25b0e 100644
+--- a/Telegram/SourceFiles/chat_helpers/message_field.cpp
++++ b/Telegram/SourceFiles/chat_helpers/message_field.cpp
+@@ -27,6 +27,8 @@ Copyright (c) 2014-2017 John Preston, https://desktop.telegram.org
+ #include "mainwindow.h"
+ #include "auth_session.h"
+ 
++#include "Hunspell.cpp"
++
+ namespace {
+ 
+ // For mention tags save and validate userId, ignore tags for different userId.
+@@ -117,6 +119,8 @@ MessageField::MessageField(QWidget *parent, not_null<Window::Controller*> contro
+ 	setMaxHeight(st::historyComposeFieldMaxHeight);
+ 
+ 	setTagMimeProcessor(std::make_unique<FieldTagMimeProcessor>());
++
++	installHunspellSyntaxHighlighter(this);
+ }
+ 
+ bool MessageField::hasSendText() const {
