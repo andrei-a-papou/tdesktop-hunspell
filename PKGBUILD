@@ -2,7 +2,7 @@
 
 pkgname=telegram-desktop
 pkgver=1.1.23
-pkgrel=1
+pkgrel=2
 pkgdesc='Official desktop version of Telegram messaging app.'
 arch=('i686' 'x86_64')
 url="https://desktop.telegram.org/"
@@ -160,7 +160,8 @@ build() {
         -static \
         -nomake examples \
         -nomake tests \
-        -no-opengl
+        -no-opengl \
+        -no-icu
     make
     make install
     export PATH="$srcdir/qt/bin:$PATH"
